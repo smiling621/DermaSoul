@@ -1,49 +1,70 @@
-# Salon-Skin-Care-An-AI-Based-Skin-Analysis-Tool
-This is an AI-based skin analysis tool developed for a salon. It can detect three different skin conditions: acne, oiliness, and the need for UV protection. This model is built using machine learning techniques and trained on a dataset of skin images.
+# DermaSoul – Smart Skin Analysis Tool 🧴📷
 
+DermaSoul is an AI-powered skin analysis tool designed to help users detect common skin conditions like **acne**, **oiliness**, and **UV sensitivity** using image processing and machine learning techniques. This application aims to assist individuals, dermatologists, and skincare enthusiasts in analyzing skin health more efficiently and accurately.
 
-### Usage
-#### Requirements
-Before running the code, you need to install the following packages:
+---
 
-* Tensorflow
-* Keras
-* Numpy
-* Pandas
-* Scikit-learn
-* Matplotlib
-* OpenCV
-* You can install these packages using pip:
-pip install tensorflow keras numpy pandas scikit-learn matplotlib opencv-python
+## Features
 
-### Running the model
-1. Clone the repository:
-git clone https://github.com/your-Ankit-RV/Salon-Skin-Care-An-AI-Based-Skin-Analysis-Tool.git
+- Real-time skin image input via webcam or uploaded photo
+- Detects:  
+   Acne  
+   Skin Type 
+   Skin Tone
+- Visual feedback and suggestions based on the analysis
 
-### Model Architecture
+---
 
-The model is built using a convolutional neural network (CNN) architecture. It consists of multiple convolutional layers and max pooling layers, followed by fully connected layers. The model is trained using the Adam optimizer and binary cross-entropy loss.
+##  Technologies Used
 
-### Dataset
-The dataset used for training the model is a collection of skin images labeled with acne, oiliness, or the need for UV protection. The dataset is not included in this repository, but you can obtain it from
+- Python, TensorFlow, Keras
+- OpenCV for image processing
+- Streamlit for frontend/web interface
+- Matplotlib, NumPy, Pandas, Scikit-learn
 
-### Results
-The model achieves an accuracy of 60% on the test set.
+---
 
-### Limitations
-* The model is only trained to detect acne, oiliness, and the need for UV protection. It may not perform well on other skin conditions.
-* The model's accuracy may vary depending on the quality of the input image.
+##  Installation
 
+Install the required libraries:
+pip install tensorflow keras numpy pandas scikit-learn matplotlib opencv-python streamlit
 
-### Conclusion
-This AI-based skin analysis tool can help salon professionals diagnose skin conditions more accurately. With further development, this model could be used as a valuable tool for the beauty industry.
+## How to USE
+1.Clone the repository
+git clone https://github.com/smiling621/DermaSoul.git
+cd DermaSoul
+2.Activate Virtual Environment
+python3 -m venv venv
+source venv/bin/activate
+3.Install Dependencies 
+pip install -r requirements.txt
+4.Run the app
+streamlit run app.py
 
-### Contact
-If you have any questions or suggestions, please contact 28ankit.raghu@gmail.com or https://github.com/Ankit-RV.
+##Model Architecture
+The AI model is based on Convolutional Neural Networks (CNNs) consisting of:
+Multiple convolutional and max-pooling layers
+Dropout layers for regularization
+Fully connected dense layers
+Trained using Adam optimizer and binary cross-entropy loss
 
-Of course, you will need to customize this template to fit your specific project and requirements. Additionally, you may want to add more information such as licensing details, usage examples, and future development plans.
+##Dataset:
+The model was trained on a dataset of labeled skin images, organized into folders:
 
+/train – for model training
+/valid – for validation
+/test – for performance evaluation
+✅ Dataset includes images for acne, skin type, and skin tone
+❗ Due to file size limitations, dataset is not included in this repo
 
+##Results:
+Results
+Achieved ~60% accuracy on the test set (baseline model).Performance depends on the image quality and lighting conditions
+
+Contact
+For questions or collaboration:
+📧 kusum072815@gmail.com
+🔗 GitHub: smiling621
 
 
 
