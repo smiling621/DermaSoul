@@ -1,4 +1,4 @@
-# DermaSoul – Smart Skin Analysis Tool 🧴📷
+# DermaSoul – Smart Skin Analysis Tool 
 
 DermaSoul is an AI-powered skin analysis tool designed to help users detect common skin conditions like **acne**, **oiliness**, and **UV sensitivity** using image processing and machine learning techniques. This application aims to assist individuals, dermatologists, and skincare enthusiasts in analyzing skin health more efficiently and accurately.
 
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 streamlit run app.py
 
 ---
-##Model Architecture
+## Model Architecture
 The AI model is based on Convolutional Neural Networks (CNNs) consisting of:
 Multiple convolutional and max-pooling layers
 
@@ -56,19 +56,18 @@ Fully connected dense layers
 
 Trained using Adam optimizer and binary cross-entropy loss
 ---
-##Dataset:
+## Dataset:
 The model was trained on a dataset of labeled skin images, organized into folders:
 
 /train – for model training
 /valid – for validation
 /test – for performance evaluation
 
-✅ Dataset includes images for acne, skin type, and skin tone
-❗ Due to file size limitations, dataset is not included in this repo
+ Dataset includes images for acne, skin type, and skin tone
+ Due to file size limitations, dataset is not included in this repo
 ---
-##Results:
-Results
-Achieved ~60% accuracy on the test set (baseline model).Performance depends on the image quality and lighting conditions
+## Results:
+Results achieved ~60% accuracy on the test set (baseline model).Performance depends on the image quality and lighting conditions
 ---
 Contact
 For questions or collaboration:
