@@ -69,11 +69,14 @@ The model was trained on a dataset of labeled skin images, organized into folder
 ---
 ## Results:
 Results achieved ~60% accuracy on the test set (baseline model).Performance depends on the image quality and lighting conditions
+
 ---
-Contact
+## Contact
 For questions or collaboration:
 📧 kusum072815@gmail.com
+
 🔗 GitHub: smiling621
+
 
 
 
