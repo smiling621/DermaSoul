@@ -55,6 +55,7 @@ Dropout layers for regularization
 Fully connected dense layers
 
 Trained using Adam optimizer and binary cross-entropy loss
+
 ---
 ## Dataset:
 The model was trained on a dataset of labeled skin images, organized into folders:
