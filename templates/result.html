@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Derma Soul - Result</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f9fc;
+      margin: 2rem;
+      color: #333;
+    }
+
+    h2 {
+      color: #d6336c;
+      margin-bottom: 1rem;
+    }
+
+    .result-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(214, 51, 108, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .next-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #d6336c;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .next-button:hover {
+      background-color: #c0265c;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Analysis Result for {{ customer_name }}</h2>
+
+  {% if face_detected == 'no' %}
+    <div class="result-box">
+      <h3>No face detected.</h3>
+      <p>Please upload a clear image of your face to get results.</p>
+    </div>
+  {% else %}
+    <div class="result-box">
+      <h3>Skin Type: {{ skin_type | capitalize }}</h3>
+    </div>
+
+    <div class="result-box">
+      <h3>Acne Severity: {{ acne | replace('_', ' ') | capitalize }}</h3>
+    </div>
+
+    <form method="get" action="{{ url_for('quiz') }}">
+      <button class="next-button" type="submit">Next → Quiz</button>
+    </form>
+  {% endif %}
+
+</body>
+</html>

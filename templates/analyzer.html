@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Derma Soul - Analyzer</title>
+  <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+  <style>
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    
+    h2 {
+      color: #d6336c;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    label {
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+    
+    input[type="text"], input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    
+    input[type="file"] {
+      padding: 10px;
+    }
+    
+    #imagePreview {
+      display: none;
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 12px;
+      margin: 20px 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    #uploadButton {
+      background: #d6336c;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    #uploadButton:hover {
+      background: #c0255a;
+    }
+    
+    #uploadButton:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+      color: #d6336c;
+    }
+    
+    .loading::after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #d6336c;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #dc3545;
+    }
+  </style>
+</head>
+<body>
+  <section class="container">
+    <h2>AI Skin Analyzer</h2>
+
+    <!-- Flash Messages -->
+    <div id="flashMessages"></div>
+
+    <!-- Analysis Form -->
+    <form id="analysisForm" method="POST" enctype="multipart/form-data">
+      <!-- Enter Name -->
+      <label for="customerName">Enter your name:</label>
+      <input type="text" id="customerName" name="customerName" placeholder="Your name" required />
+
+      <!-- Upload Photo -->
+      <label for="imageUpload">Upload your photo:</label>
+      <input type="file" id="imageUpload" name="image" accept="image/*" required />
+      <img id="imagePreview" />
+
+      <!-- Upload Button -->
+      <button type="submit" id="uploadButton">Analyze My Skin</button>
+    </form>
+
+    <!-- Loading indicator -->
+    <div class="loading" id="loadingIndicator">
+      Analyzing your skin, please wait...
+    </div>
+  </section>
+
+  <script>
+    const imageUpload = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const customerNameInput = document.getElementById('customerName');
+    const analysisForm = document.getElementById('analysisForm');
+    const uploadButton = document.getElementById('uploadButton');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+
+    // Preview uploaded image
+    imageUpload.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function() {
+          imagePreview.src = reader.result;
+          imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        imagePreview.style.display = 'none';
+      }
+    });
+
+    // Handle form submission
+    analysisForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = customerNameInput.value.trim();
+      const file = imageUpload.files[0];
+
+      // Validation
+      if (!name) {
+        showMessage('Please enter your name.', 'error');
+        return;
+      }
+
+      if (!file) {
+        showMessage('Please select an image to upload.', 'error');
+        return;
+      }
+
+      // Check file type
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp'];
+      if (!allowedTypes.includes(file.type)) {
+        showMessage('Please upload a valid image file (JPEG, PNG, GIF, or BMP).', 'error');
+        return;
+      }
+
+      // Check file size (16MB limit)
+      const maxSize = 16 * 1024 * 1024; // 16MB
+      if (file.size > maxSize) {
+        showMessage('File size too large. Please upload an image smaller than 16MB.', 'error');
+        return;
+      }
+
+      // Show loading state
+      uploadButton.disabled = true;
+      uploadButton.textContent = 'Analyzing...';
+      loadingIndicator.style.display = 'block';
+
+      // Create FormData and submit
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('customerName', name);
+
+      fetch('/analyzer', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => {
+        if (response.redirected) {
+          window.location.href = response.url;
+          return;
+        }
+        return response.text();
+      })
+      .then(html => {
+        if (html) {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const errorMessages = doc.querySelectorAll('.error-message, .alert-error');
+          
+          if (errorMessages.length > 0) {
+            let errorText = '';
+            errorMessages.forEach(msg => {
+              errorText += msg.textContent.trim() + ' ';
+            });
+            showMessage(errorText.trim(), 'error');
+          } else {
+            showMessage('An error occurred while processing your image. Please try again.', 'error');
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showMessage('Network error. Please check your connection and try again.', 'error');
+      })
+      .finally(() => {
+        uploadButton.disabled = false;
+        uploadButton.textContent = 'Analyze My Skin';
+        loadingIndicator.style.display = 'none';
+      });
+    });
+
+    // Helper function to show messages
+    function showMessage(message, type) {
+      const flashMessages = document.getElementById('flashMessages');
+      const messageClass = type === 'error' ? 'error-message' : 'success-message';
+      
+      flashMessages.innerHTML = `<div class="${messageClass}">${message}</div>`;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      setTimeout(() => {
+        flashMessages.innerHTML = '';
+      }, 5000);
+    }
+
+    // Clear messages when user starts interacting
+    customerNameInput.addEventListener('input', () => {
+      document.getElementById('flashMessages').innerHTML = '';
+    });
+
+    imageUpload.addEventListener('change', () => {
+      document.getElementById('flashMessages').innerHTML = '';
+    });
+  </script>
+</body>
+</html>
