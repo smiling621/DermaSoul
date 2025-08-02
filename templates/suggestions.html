@@ -66,14 +66,6 @@
 <body>
   <h2>Your Personalized Skin Care Suggestions</h2>
   
-  <!-- DEBUG INFO - Remove this after fixing -->
-  <div style="background: #f0f0f0; padding: 10px; margin: 10px 0; border: 1px solid #ccc;">
-    <strong>DEBUG:</strong><br>
-    quiz_completed: {{ quiz_completed }}<br>
-    suggestions: {{ suggestions }}<br>
-    suggestions length: {{ suggestions|length if suggestions else 'None' }}
-  </div>
-
   {% if face_detected == 'no' %}
     <div class="suggestion-box">
       <h3>No face detected.</h3>
